@@ -50,8 +50,8 @@ for j in range(1,23):
 
     print("total rbg",itot)
     b,g,r = cv2.split(img)
-    cv2.imshow(str(j),img)
-    cv2.imshow("b",gray)
+   #  cv2.imshow(str(j),img)
+   #  cv2.imshow("b",gray)
 
     # cv2.imshow("g",g)
     # cv2.imshow("r",r)
@@ -64,13 +64,14 @@ for j in range(1,23):
 
     plt.title(str(j))
     plt.hist(b.ravel(),256,[0,256],facecolor='b')
-    # plt.hist(g.ravel(),256,[0,256],facecolor='g')
-    # plt.hist(r.ravel(),256,[0,256],facecolor='r')
+    plt.hist(g.ravel(),256,[0,256],facecolor='g')
+    plt.hist(r.ravel(),256,[0,256],facecolor='r')
     # x_val.append(j)
     # plt.plot(x_val,bAveVals)
     # plt.plot(x_val,gAveVals)
     # plt.plot(x_val,rAveVals)
     plt.show()
+
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
