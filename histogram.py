@@ -4,20 +4,30 @@ from matplotlib import pyplot as plt
 
 
 paperSensors = []
+#load and read each photo of the cropped paper sensor images with black background
 for i in range(1,23):
    paperSensor = cv2.imread(str(i)+".jpg")
    paperSensors.append(paperSensor)
 
+#initialize the matrix for the average value of the RGB intensity of the image
 bAveVals= []  #average value for blue
 gAveVals= []  #average value for green
 rAveVals= []  #average value for red
 x_val = []
+
+#initialize the matrix for the sum of the RGB intensity of the image
 iTotVal = []
+
+
 for j in range(1,23):
 
+   #access the first paper sensor in the matrix
     img = paperSensors[j]
-    totalPixelValues = cv2.sumElems(img)
 
+    #sum of the RGB intensity values of the image
+    totalPixelValues = cv2.sumElems(img)
+       
+    
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     nonBlack = cv2.countNonZero(gray)
     print("Widths",img.shape[1])
@@ -51,7 +61,7 @@ for j in range(1,23):
     print("total rbg",itot)
     b,g,r = cv2.split(img)
    #  cv2.imshow(str(j),img)
-   #  cv2.imshow("b",gray)
+    cv2.imshow("b",gray)
 
     # cv2.imshow("g",g)
     # cv2.imshow("r",r)

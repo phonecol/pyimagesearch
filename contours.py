@@ -10,24 +10,32 @@ import cv2
 path = 'papersensor1.jpg'
 # image = cv2.imread(args[image])
 image = cv2.imread(path)
-scale_percent = 50 # percent of original size
+
+# resize image
+scale_percent = 40 # percent of original size
 width = int(image.shape[1] * scale_percent / 100)
 height = int(image.shape[0] * scale_percent / 100)
 dim = (width, height)
-
-# resize image
 resized = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
 image = resized
+
+#convert image to grayscale colorspace
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#blur the grayscale image
 blurred = cv2.GaussianBlur(gray,(5,5),0)
+
+#thresholding separates the paper sensor or ROI to the background
+#this will create the mask
 thresh = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)[1]
-mask = cv2.bitwise_and(image,image, mask=thresh)
+
+#the original image will be masked with thresholded image so that the paper sensor will have a black background
+masked = cv2.bitwise_and(image,image, mask=thresh)
 print(image.shape)
 
 cv2.imshow('Original',image)
 cv2.imshow('Resized',resized)
 cv2.imshow('Threshold',thresh)
-cv2.imshow('mask',mask)
+cv2.imshow('masked',masked)
 
 cv2.waitKey(0)
 
@@ -49,10 +57,10 @@ for c in cnts:
     # cY = int(M["m01"]/ M["m00"])
 
     #draw the contour and center of the shape on the image
-    cv2.drawContours(mask, [c], -1, (0,255,0),2)
-    cv2.circle(mask, (cX,cY), 7,(255,255,255), -1)
-    cv2.putText(mask, "center",(cX-20,cY-20),
+    cv2.drawContours(masked, [c], -1, (0,255,0),2)
+    cv2.circle(masked, (cX,cY), 7,(255,255,255), -1)
+    cv2.putText(masked, "center",(cX-20,cY-20),
         cv2.FONT_HERSHEY_SIMPLEX, 0.5,(255,255,255),2)
 
-    cv2.imshow("Image",mask)
+    cv2.imshow("Image",masked)
     cv2.waitKey(0)
